@@ -52,13 +52,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (grantResults.length > 0 && grantResults[0] == (PackageManager.PERMISSION_GRANTED)) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
                 centerMapOnLocation(lastKnownLocation, "Your Location");
             }
-
         }
     }
 
@@ -90,7 +89,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             locationListener = new LocationListener() {
                 @Override
-                public void onLocationChanged(@NonNull Location location) {
+                public void onLocationChanged(Location location) {
                     centerMapOnLocation(location, "Your Location");
                 }
             };
@@ -110,14 +109,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             centerMapOnLocation(placeLocation, MainActivity.places.get(intent.getIntExtra("placeNumber",0)));
         };
-
     }
 
 
-
-
     @Override
-    public void onMapLongClick(@NonNull LatLng latLng) {
+    public void onMapLongClick(LatLng latLng) {
 
         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
         String address = "";
@@ -130,7 +126,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         address += listAddresses.get(0).getSubThoroughfare() + " ";
                     }
                     address += listAddresses.get(0).getThoroughfare();
-
                 }
 
             }
@@ -140,7 +135,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         if (address.equals("")) {
-
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm yyyy-MM-dd");
             address += sdf.format(new Date());
         }
@@ -149,6 +143,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         MainActivity.places.add(address);
         MainActivity.locations.add(latLng);
         MainActivity.arrayAdapter.notifyDataSetChanged();
-
     }
 }
